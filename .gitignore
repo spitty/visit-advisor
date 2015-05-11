@@ -15,3 +15,7 @@ hs_err_pid*
 /nb-configuration.xml
 /nbactions.xml
 /target/
+
+# IDEA project files
+*.iml
+/.idea/
