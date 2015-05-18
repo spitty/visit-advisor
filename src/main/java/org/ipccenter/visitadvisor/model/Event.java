@@ -19,6 +19,12 @@ public class Event {
         this.time = time;
     }
 
+    // TODO: String to LocalDateTime
+    public Event(String name, String time) {
+        this.name = name;
+        this.time = null;
+    }
+
     public Long getId() {
         return id;
     }

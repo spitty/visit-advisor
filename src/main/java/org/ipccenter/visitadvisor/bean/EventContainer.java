@@ -15,19 +15,13 @@ import java.util.List;
 public class EventContainer {
     private static final Logger log = Logger.getLogger(EventContainer.class);
 
-    List<Event> eventsList;
-
     public EventContainer() {
         log.debug("Constructor called");
-        int s = 10;
-        log.debug("Creating " + s + " events");
-        eventsList = new EventService().createEvents(10);
-        log.debug("" + s + " events created");
     }
 
     public List<Event> getEventsList() {
         log.debug("getEventList() called");
-        return eventsList;
+        return new EventService().getEvents();
     }
 
     @Override

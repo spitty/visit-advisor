@@ -22,6 +22,7 @@ import java.sql.*;
 public class EventService {
     private static final Logger log = Logger.getLogger(EventContainer.class);
     Connection connection;
+    PreparedStatement getEventsStatement;
 
     public EventService() {
         try {
@@ -37,6 +38,14 @@ public class EventService {
             log.debug("Connected to database");
         } catch (SQLException e) {
             log.error("Can't connect to database");
+            e.printStackTrace();
+        }
+        try {
+            log.debug("Preparing getEventsStatement");
+            getEventsStatement = connection.prepareStatement("SELECT * FROM events");
+            log.debug("getEventsStatement prepared");
+        } catch (SQLException e) {
+            log.error("Can't prepare statement");
             e.printStackTrace();
         }
     }
@@ -61,6 +70,25 @@ public class EventService {
     }
 
     public List<Event> getEvents() {
-        return new ArrayList<Event>();
+        ResultSet resultSet;
+        try {
+            resultSet = getEventsStatement.executeQuery();
+            log.debug("Events received from database");
+        } catch (SQLException e) {
+            log.error("Can't get events from database");
+            e.printStackTrace();
+            return null;
+        }
+        List<Event> eventList = new ArrayList<Event>();
+        try {
+            while(resultSet.next()) {
+                eventList.add(new Event(resultSet.getString(2), resultSet.getString(3)));
+                log.debug("Event from result added");
+            }
+        } catch (SQLException e) {
+            log.error("Can't process result");
+            e.printStackTrace();
+        }
+        return eventList;
     }
 }
