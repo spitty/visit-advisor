@@ -21,7 +21,7 @@ public class EventContainer {
 
     public List<Event> getEventsList() {
         log.debug("getEventList() called");
-        return new EventService().getEvents();
+        return new EventService().getAll();
     }
 
     @Override

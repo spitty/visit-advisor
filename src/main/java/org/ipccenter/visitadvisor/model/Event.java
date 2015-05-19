@@ -1,5 +1,6 @@
 package org.ipccenter.visitadvisor.model;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -8,11 +9,24 @@ import java.time.LocalDateTime;
  *
  * @author spitty
  */
+@Entity
+@Table(name = "events")
+@NamedQuery(name = "Event.getAll", query = "SELECT e from Event e")
 public class Event {
-    
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(name = "name", length = 255)
     private String name;
+
+    @Column(name = "time")
+    //@Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime time;
+
+    public Event() {
+    }
 
     public Event(String name, LocalDateTime time) {
         this.name = name;

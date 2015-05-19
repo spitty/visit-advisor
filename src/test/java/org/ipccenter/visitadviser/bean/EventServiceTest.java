@@ -14,13 +14,13 @@ import org.testng.annotations.Test;
  */
 @Test
 public class EventServiceTest {
+
+    static EventService service = new EventService();
     
     public static void test() {
-        EventContainer container = new EventContainer();
-        EventService service = new EventService();
-        int size = 10;
-        List<Event> events = service.createEvents(size);
-        System.out.println(events);
-        Assert.assertEquals(events.size(), size, "Size of event list differs");
+        Event event1 = new Event();
+        event1.setName("BMW");
+
+        Event event = service.add(event1);
     }
 }
