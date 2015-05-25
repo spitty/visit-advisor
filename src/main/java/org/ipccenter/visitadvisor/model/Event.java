@@ -1,23 +1,21 @@
 package org.ipccenter.visitadvisor.model;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 
 /**
  *
  * @author spitty
  */
+@Entity
 public class Event {
     
+    @Id
     private Long id;
     private String name;
-    private LocalDateTime time;
-
-    public Event(String name, LocalDateTime time) {
-        this.name = name;
-        this.time = time;
-    }
+    private Timestamp time;
 
     public Long getId() {
         return id;
@@ -35,11 +33,11 @@ public class Event {
         this.name = name;
     }
 
-    public LocalDateTime getTime() {
+    public Timestamp getTime() {
         return time;
     }
 
-    public void setTime(LocalDateTime time) {
+    public void setTime(Timestamp time) {
         this.time = time;
     }
 

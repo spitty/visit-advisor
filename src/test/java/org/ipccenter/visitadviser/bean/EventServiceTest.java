@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
  *
  * @author spitty
  */
-@Test
+//@Test
 public class EventServiceTest {
     
     public static void test() {
