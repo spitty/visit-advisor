@@ -1,8 +1,7 @@
 package org.ipccenter.visitadvisor.model;
 
+import java.sql.Timestamp;
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 
 /**
@@ -18,17 +17,17 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name", length = 255)
+    @Column(name = "name", length = 254)
     private String name;
 
     @Column(name = "time")
-    //@Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime time;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp time;
 
     public Event() {
     }
 
-    public Event(String name, LocalDateTime time) {
+    public Event(String name, Timestamp time) {
         this.name = name;
         this.time = time;
     }
@@ -55,11 +54,11 @@ public class Event {
         this.name = name;
     }
 
-    public LocalDateTime getTime() {
+    public Timestamp getTime() {
         return time;
     }
 
-    public void setTime(LocalDateTime time) {
+    public void setTime(Timestamp time) {
         this.time = time;
     }
 

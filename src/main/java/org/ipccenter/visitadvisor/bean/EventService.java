@@ -1,20 +1,16 @@
 package org.ipccenter.visitadvisor.bean;
 
-/*import java.text.NumberFormat;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;*/
+import java.sql.SQLException;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
+import javax.sql.ConnectionPoolDataSource;
+import javax.sql.PooledConnection;
 
 import org.apache.log4j.Logger;
 import org.ipccenter.visitadvisor.model.Event;
-//import java.sql.*;
 
 /**
  *
@@ -24,13 +20,22 @@ import org.ipccenter.visitadvisor.model.Event;
 @ApplicationScoped
 public class EventService {
     private static final Logger log = Logger.getLogger(EventContainer.class);
-    //Connection connection;
-    //PreparedStatement getEventsStatement;
+    
+    @Resource(name="jdbc/visit-advisor-data")
+    private ConnectionPoolDataSource ds;
+    private PooledConnection conn;
 
-    public EntityManager em = Persistence.createEntityManagerFactory("COLIBRI").createEntityManager();
-
-    public Event add(Event event){
+    public Event add(Event event) throws SQLException{
         log.debug("add called");
+        try {
+            conn = ds.getPooledConnection();
+            
+        } catch (Exception e) {
+            log.error("Can't add event to database");
+            return null;
+        } finally {
+            conn.close();
+        }
         em.getTransaction().begin();
         Event eventFromDB = em.merge(event);
         em.getTransaction().commit();
