@@ -1,13 +1,10 @@
 package org.ipccenter.visitadvisor.bean;
 
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
 import javax.annotation.Resource;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
@@ -61,7 +58,7 @@ public class EventService {
             for (int i = 0; i < size; i++) {
                 Event event = new Event();
                 event.setName(String.format("Event %3d", i));
-                event.setTime(new Timestamp(LocalDateTime.now().plusDays(i).toInstant(ZoneOffset.UTC).toEpochMilli()));
+                event.setTime(new Timestamp(ZonedDateTime.now().plusDays(i).toEpochSecond()*1000L));
                 event.setId(Long.valueOf(i+1));
                 events.add(event);
                 em.persist(event);
