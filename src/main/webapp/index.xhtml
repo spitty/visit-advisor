@@ -3,10 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
+    
+    
     
     <h:form id="form">
         <p:dataList value="#{managedBead.events}" var="event" type="ordered">
@@ -19,7 +22,8 @@
                 <f:setPropertyActionListener value="#{event}" target="#{managedBead.selectedEvent}" />
             </h:commandButton>
         </p:dataList>
+        <h:commandButton actionListener="#{eventService.createUser()}" value="Push me"></h:commandButton>
     </h:form>
-
+    
 </html>
 
