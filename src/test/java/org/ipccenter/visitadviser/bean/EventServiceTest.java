@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
  * @author spitty
  */
 //@Test
+//TODO make this test work without EE context
 public class EventServiceTest {
     
     public static void test() {
