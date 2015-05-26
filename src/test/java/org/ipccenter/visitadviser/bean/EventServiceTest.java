@@ -18,9 +18,6 @@ public class EventServiceTest {
     static EventService service = new EventService();
     
     public static void test() {
-        Event event1 = new Event();
-        event1.setName("wfdsllskfjkldsfklj");
 
-        Event event = service.add(event1);
     }
 }
