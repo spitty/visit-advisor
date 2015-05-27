@@ -30,6 +30,7 @@ public class EventService {
     EntityManagerFactory emf;
 
     public Event add(Event event) {
+        log.debug("add called");
         EntityManager em = emf.createEntityManager();
         try {
             em.persist(event);

@@ -1,6 +1,7 @@
 package org.ipccenter.visitadvisor.model;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import javax.persistence.*;
 
 
@@ -26,12 +27,12 @@ public class Event {
 
     @Column(name = "time")
     @Temporal(TemporalType.TIMESTAMP)
-    private Timestamp time;
+    private Date time;
 
     public Event() {
     }
 
-    public Event(String name, Timestamp time) {
+    public Event(String name, Date time) {
         this.name = name;
         this.time = time;
     }
@@ -58,11 +59,11 @@ public class Event {
         this.name = name;
     }
 
-    public Timestamp getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(Timestamp time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 

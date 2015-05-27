@@ -25,6 +25,10 @@ public class EventContainer {
 
     public List<Event> getEventsList() {
         log.debug("getEventList() called");
+        service.add(new Event("test", ""));
+        service.add(new Event("test", ""));
+        service.add(new Event("tedssdst", ""));
+        service.delete(2);
         return service.getAll();
     }
 
