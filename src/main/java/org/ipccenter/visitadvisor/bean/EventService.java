@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.sql.ConnectionPoolDataSource;
 import javax.sql.PooledConnection;
@@ -27,40 +28,65 @@ public class EventService {
     
     @PersistenceUnit(name="org.ipccenter_visit-advisor_war_1.0-SNAPSHOTPU")
     EntityManagerFactory emf;
-    private ConnectionPoolDataSource ds;
-    private PooledConnection conn;
 
-    public Event add(Event event) throws SQLException{
-        log.debug("add called");
+    public Event add(Event event) {
+        EntityManager em = emf.createEntityManager();
         try {
-            conn = ds.getPooledConnection();
-            
-        } catch (Exception e) {
-            log.error("Can't add event to database");
-            return null;
-        } finally {
-            conn.close();
+            em.persist(event);
+            return event;   // bad idea
         }
-        return null;
+        finally {
+            em.close();
+        }
     }
     
 
     public void delete(long id){
         log.debug("delete called");
+        EntityManager em = emf.createEntityManager();
+        try {
+            Query q = em.createNamedQuery("Event.deletById");
+            q.setParameter("id", id);
+        }
+        finally {
+            em.close();
+        }       
     }
 
     public Event get(long id){
         log.debug("get called");
-        return null;
+        EntityManager em = emf.createEntityManager();
+        try {
+            Query q = em.createNamedQuery("Event.getById");
+            q.setParameter("id", id);
+            return (Event)q.getSingleResult();
+        }
+        finally {
+            em.close();
+        }  
     }
 
     public void update(Event event){
         log.debug("update called");
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.merge(event);
+        }
+        finally {
+            em.close();
+        }  
     }
 
     public List<Event> getAll() {
         log.debug("getAll called");
-        return null;
+        EntityManager em = emf.createEntityManager();
+        try {
+            Query q = em.createNamedQuery("Event.getAll");
+            return q.getResultList();
+        }
+        finally {
+            em.close();
+        }
     }
     
     public void createUser() {

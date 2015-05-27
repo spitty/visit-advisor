@@ -10,7 +10,11 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "events")
-@NamedQuery(name = "Event.getAll", query = "SELECT e from Event e")
+@NamedQueries({
+    @NamedQuery(name = "Event.getAll", query = "SELECT e from Event e"),
+    @NamedQuery(name = "Event.getById", query = "SELECT e from Event e WHERE e.id = :id"),
+    @NamedQuery(name = "Event.deletById", query="DELETE FROM Event e WHERE e.id = :id")
+})
 public class Event {
 
     @Id
