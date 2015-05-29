@@ -27,7 +27,7 @@ public class Target implements Serializable {
         this.description = description;
         System.out.println("Target created!");
     }
-    
+     
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
