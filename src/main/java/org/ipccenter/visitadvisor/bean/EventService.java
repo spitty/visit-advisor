@@ -14,7 +14,6 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
@@ -22,7 +21,6 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
-import org.ipccenter.visitadvisor.entities.Target;
 import org.ipccenter.visitadvisor.model.Event;
 import org.ipccenter.visitadvisor.model.User;
 
@@ -40,7 +38,7 @@ public class EventService {
     @PersistenceUnit 
     EntityManagerFactory entityManagerFactory;
 
-    //@PostConstruct
+    @PostConstruct
     public void createUser(){
         try {
             System.out.println("createUser");
@@ -57,17 +55,6 @@ public class EventService {
         } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
             Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
-    public void createTarget(){
-//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ToDoList");
-//        EntityManager em = emf.createEntityManager();
-//        Target target = new Target("dinner", "I must eat belok");
-//        System.out.println("new Target");
-//        em.getTransaction().begin();
-//        em.persist(em);
-//        em.getTransaction().commit();
-        
     }
     
     /**
