@@ -16,7 +16,6 @@ import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
-import javax.transaction.Transactional;
 import javax.transaction.UserTransaction;
 import org.ipccenter.visitadvisor.model.Event;
 import org.slf4j.Logger;
@@ -43,29 +42,32 @@ public class EventService {
      * @param size specifies size of result {@link List}
      * @return {@link List} of {@link Event}
      */
-    @Transactional
     public List<Event> createEvents(int size) {
-        LOG.info("createEvents({}) called", size);
+        LOG.debug("createEvents({}) called", size);
         if (size < 1) {
             return Collections.EMPTY_LIST;
         }
-        EntityManager em = null;
         try {
-            em = emf.createEntityManager();
+            EntityManager em = emf.createEntityManager();
+            // begin transaction
             utx.begin();
+            // join to started transaction
             em.joinTransaction();
             List<Event> events = new ArrayList<>(size);
             for (int i = 0; i < size; i++) {
-                Event event = new Event();
-                event.setName(String.format("Event %3d", i));
-                event.setTime(new Timestamp(ZonedDateTime.now().plusDays(i).toEpochSecond()*1000L));
-                event.setId(Long.valueOf(i+1));
+                Event event = em.find(Event.class, (long) i + 1);
+                if (event == null) {
+                    event = new Event();
+                    event.setName(String.format("Event %3d", i));
+                    event.setTime(new Timestamp(ZonedDateTime.now().plusDays(i).toEpochSecond()*1000L));
+                    event.setId(Long.valueOf(i+1));
+                    em.persist(event);
+                }
                 events.add(event);
-                em.persist(event);
             }
             em.flush();
             utx.commit();
-            LOG.info("Returned: {}", events);
+            LOG.debug("Returned: {}", events);
             return events;
         } catch (SecurityException | RollbackException | HeuristicMixedException 
                 | HeuristicRollbackException | SystemException 
