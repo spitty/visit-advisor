@@ -17,7 +17,7 @@ import javax.persistence.Id;
  */
 @Entity
 public class Target implements Serializable {
-    
+      
     public Target(){
         System.out.println("Target created");
     }
