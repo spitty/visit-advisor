@@ -1,8 +1,7 @@
 package org.ipccenter.visitadvisor.bean;
 
-import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 import javax.annotation.Resource;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
@@ -10,17 +9,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.sql.ConnectionPoolDataSource;
-import javax.sql.PooledConnection;
-import javax.transaction.NotSupportedException;
-import javax.transaction.SystemException;
-import javax.transaction.Transactional;
 import javax.transaction.UserTransaction;
 
 import org.apache.log4j.Logger;
 import org.ipccenter.visitadvisor.model.Event;
-import org.ipccenter.visitadvisor.model.User;
 
 /**
  *
@@ -37,15 +29,18 @@ public class EventService {
     @Resource
     UserTransaction utx;
     
-    public Event add(Event event) {
+    public Event add(String name, Date time) {
         log.debug("add called");
+        Event event = new Event(name, time);
         EntityManager em = emf.createEntityManager();
-        try {          
+        try {
+            log.debug("Trying to add: " + event.getName());
             utx.begin();
             em.joinTransaction();
             em.persist(event);
             utx.commit();
-            return event;   // bad idea
+            log.debug("Added: " + event.getName());
+            return event;
         }
         catch (Exception ex) {
             log.error("Can't commit add transaction");
