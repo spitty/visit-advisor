@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Events List</title>
+</h:head>
+<h:body>
+    Events:
+    <br/>
+    <f:view>
+        <h:form id="eventsList">
+            <h:dataTable id="events"
+                         value="#{eventContainer.getEventsList()}"
+                         var="event"
+                         border="1">  
+            <h:column>
+            <f:facet name="header">
+            <h:outputText value="Event Name"/>
+            </f:facet>
+                <h:outputText value="#{event.name}"/>
+            </h:column>
+            <h:column>
+            <f:facet name="header">
+            <h:outputText value="Event Time"/>
+            </f:facet>
+                <h:outputText value="#{event.time}"/>
+            </h:column>
+            <h:column>
+            <f:facet name="header">
+            <h:outputText value="Edit"/>
+            </f:facet>
+            <h:commandLink id="Edit"
+                           action="editEvent">
+                <h:outputText value="Edit" />
+                <f:param id="editEvent"
+                         name=""
+                         value=""/>
+            </h:commandLink>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Delete"/>
+                </f:facet>
+                    <h:commandLink id="Delete"
+                                   action="deleteEvent"
+                                   actionListener="#{eventContainer.deleteEvent}">
+                    <h:outputText value="Delete"/>
+                    <f:param id="deleteEvent"
+                             name="eventId"
+                             value="#{event.id}"/>
+                </h:commandLink>
+            </h:column>
+            </h:dataTable>
+            <h:inputText size="14"
+                         value="#{eventContainer.newEventName}"/>
+            <br/>
+            <h:commandButton id="Add"
+                             value="Add Event"
+                             action="addEvent"
+                             actionListener="#{eventContainer.addEvent}">
+            </h:commandButton>
+        </h:form>
+    </f:view>
+</h:body>
+</html>
+
