@@ -1,8 +1,11 @@
 package org.ipccenter.visitadvisor.model;
 
-import java.sql.Timestamp;
+import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
@@ -15,7 +18,9 @@ public class Event {
     @Id
     private Long id;
     private String name;
-    private Timestamp time;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "time_stamp")
+    private Date time;
 
     public Long getId() {
         return id;
@@ -33,14 +38,14 @@ public class Event {
         this.name = name;
     }
 
-    public Timestamp getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(Timestamp time) {
+    public void setTime(Date time) {
         this.time = time;
     }
-
+    
     @Override
     public String toString() {
         return "Event{" + "name=" + name + ", time=" + time + '}';
