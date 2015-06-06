@@ -17,7 +17,7 @@
                         <p:outputLabel value="#{bundle.CreateEventLabel_name}" for="name" />
                         <p:inputText id="name" value="#{eventController.selected.name}" title="#{bundle.CreateEventTitle_name}" />
                         <p:outputLabel value="#{bundle.CreateEventLabel_time}" for="time" />
-                        <p:inputText id="time" value="#{eventController.selected.time}" title="#{bundle.CreateEventTitle_time}" />
+                        <p:calendar id="time" value="#{eventController.selected.time}" pattern="MM/dd/yyyy HH:mm:ss" title="#{bundle.CreateEventTitle_time}"/>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{eventController.create}" value="#{bundle.Save}" update="display,:EventListForm:datalist,:growl" oncomplete="handleSubmit(args,'EventCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="EventCreateDialog.hide()"/>
