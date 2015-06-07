@@ -13,4 +13,5 @@ hs_err_pid*
 
 # IDE configs
 /nb-configuration.xml
+/nbactions.xml
 /target/
