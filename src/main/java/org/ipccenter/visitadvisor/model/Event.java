@@ -1,6 +1,5 @@
 package org.ipccenter.visitadvisor.model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -9,7 +8,7 @@ import java.time.LocalDateTime;
  * @author spitty
  */
 public class Event {
-    
+
     private Long id;
     private String name;
     private LocalDateTime time;
@@ -26,7 +25,7 @@ public class Event {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -47,5 +46,5 @@ public class Event {
     public String toString() {
         return "Event{" + "name=" + name + ", time=" + time + '}';
     }
-    
+
 }
