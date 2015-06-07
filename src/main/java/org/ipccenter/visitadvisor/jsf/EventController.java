@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 public class EventController implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(EventController.class);
-    
+
     @EJB
     private EventFacade ejbFacade;
     private List<Event> items = null;
@@ -63,7 +63,7 @@ public class EventController implements Serializable {
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
-    
+
     public void updateFromDB() {
         LOG.debug("updateFromDB called");
         items = null;
@@ -108,7 +108,8 @@ public class EventController implements Serializable {
                 if (msg.length() > 0) {
                     JsfUtil.addErrorMessage(msg);
                 } else {
-                    JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+                    JsfUtil.addErrorMessage(ex
+                            , ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
                 }
             } catch (Exception ex) {
                 LOG.error(ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"), ex);
@@ -162,7 +163,8 @@ public class EventController implements Serializable {
                 Event o = (Event) object;
                 return getStringKey(o.getId());
             } else {
-                LOG.error("object {} is of type {}; expected type: {}", object, object.getClass().getName(), Event.class.getName());
+                LOG.error("object {} is of type {}; expected type: {}"
+                        , object, object.getClass().getName(), Event.class.getName());
                 return null;
             }
         }

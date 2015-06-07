@@ -14,7 +14,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 public class Event {
-    
+
     @Id
     private Long id;
     private String name;
@@ -45,7 +45,7 @@ public class Event {
     public void setTime(Date time) {
         this.time = time;
     }
-    
+
     @Override
     public String toString() {
         return "Event{" + "name=" + name + ", time=" + time + '}';

@@ -28,15 +28,15 @@ import org.slf4j.LoggerFactory;
 @ManagedBean
 @ApplicationScoped
 public class EventService {
-    
-    Logger LOG = LoggerFactory.getLogger(EventService.class);
-    
+
+    private static final Logger LOG = LoggerFactory.getLogger(EventService.class);
+
     @PersistenceUnit
-    EntityManagerFactory emf;
-    
+    private EntityManagerFactory emf;
+
     @Resource
-    UserTransaction utx;
-    
+    private UserTransaction utx;
+
     /**
      * Generate sample list of events.
      * @param size specifies size of result {@link List}
@@ -59,8 +59,8 @@ public class EventService {
                 if (event == null) {
                     event = new Event();
                     event.setName(String.format("Event %3d", i));
-                    event.setTime(new Timestamp(ZonedDateTime.now().plusDays(i).toEpochSecond()*1000L));
-                    event.setId(Long.valueOf(i+1));
+                    event.setTime(new Timestamp(ZonedDateTime.now().plusDays(i).toInstant().toEpochMilli()));
+                    event.setId(Long.valueOf(i + 1));
                     em.persist(event);
                 }
                 events.add(event);
@@ -69,8 +69,8 @@ public class EventService {
             utx.commit();
             LOG.debug("Returned: {}", events);
             return events;
-        } catch (SecurityException | RollbackException | HeuristicMixedException 
-                | HeuristicRollbackException | SystemException 
+        } catch (SecurityException | RollbackException | HeuristicMixedException
+                | HeuristicRollbackException | SystemException
                 | IllegalStateException | NotSupportedException
                 ex) {
             LOG.error("Error occurred on creating test Events", ex);
