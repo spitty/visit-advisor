@@ -29,7 +29,7 @@ public class Event {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -50,5 +50,5 @@ public class Event {
     public String toString() {
         return "Event{" + "name=" + name + ", time=" + time + '}';
     }
-    
+
 }

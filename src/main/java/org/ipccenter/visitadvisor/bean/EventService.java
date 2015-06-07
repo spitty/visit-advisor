@@ -38,7 +38,7 @@ public class EventService {
     UserTransaction utx;
     
     /**
-     * Generate sample list of events
+     * Generate sample list of events.
      * @param size specifies size of result {@link List}
      * @return {@link List} of {@link Event}
      */
