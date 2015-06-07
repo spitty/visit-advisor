@@ -3,6 +3,7 @@ package org.ipccenter.visitadvisor.bean;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,7 @@ public abstract class AbstractFacade<T> {
     public List<T> findAll() {
         LOG.debug("Facade.findAll");
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-        javax.persistence.criteria.CriteriaQuery cq = cb.createQuery();
+        CriteriaQuery cq = cb.createQuery();
         Root c = cq.from(entityClass);
         cq.select(c).orderBy(cb.asc(c.get("time")));
         return getEntityManager().createQuery(cq).getResultList();
@@ -50,7 +51,7 @@ public abstract class AbstractFacade<T> {
 
     public List<T> findRange(int[] range) {
         LOG.debug("Facade.findRange({}, {})", range[0], range[1]);
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         q.setMaxResults(range[1] - range[0] + 1);
@@ -59,8 +60,8 @@ public abstract class AbstractFacade<T> {
     }
 
     public int count() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-        javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
+        CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        Root<T> rt = cq.from(entityClass);
         cq.select(getEntityManager().getCriteriaBuilder().count(rt));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();

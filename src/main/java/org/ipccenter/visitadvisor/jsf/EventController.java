@@ -26,7 +26,7 @@ public class EventController implements Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(EventController.class);
     
     @EJB
-    private org.ipccenter.visitadvisor.bean.EventFacade ejbFacade;
+    private EventFacade ejbFacade;
     private List<Event> items = null;
     private Event selected;
 
