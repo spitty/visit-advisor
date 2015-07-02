@@ -4,6 +4,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -13,6 +14,7 @@ import javax.persistence.TemporalType;
  * @author spitty
  */
 @Entity
+@NamedQuery(name = "Event.getAll", query = "SELECT e from Event e")
 public class Event {
 
     @Id
