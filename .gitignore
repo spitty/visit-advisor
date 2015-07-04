@@ -19,3 +19,6 @@ hs_err_pid*
 # IDEA project files
 *.iml
 /.idea/
+
+# Logs, etc
+*.log
