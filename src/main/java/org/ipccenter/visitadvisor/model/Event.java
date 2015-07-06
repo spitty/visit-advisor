@@ -1,23 +1,28 @@
 package org.ipccenter.visitadvisor.model;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
  *
  * @author spitty
  */
+@Entity
+@NamedQuery(name = "Event.getAll", query = "SELECT e from Event e")
 public class Event {
-    
+
+    @Id
     private Long id;
     private String name;
-    private LocalDateTime time;
-
-    public Event(String name, LocalDateTime time) {
-        this.name = name;
-        this.time = time;
-    }
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "time_stamp")
+    private Date time;
 
     public Long getId() {
         return id;
@@ -26,7 +31,7 @@ public class Event {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -35,11 +40,11 @@ public class Event {
         this.name = name;
     }
 
-    public LocalDateTime getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(LocalDateTime time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 
@@ -47,5 +52,5 @@ public class Event {
     public String toString() {
         return "Event{" + "name=" + name + ", time=" + time + '}';
     }
-    
+
 }

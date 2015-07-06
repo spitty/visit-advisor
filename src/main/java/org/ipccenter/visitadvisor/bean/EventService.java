@@ -1,14 +1,10 @@
 package org.ipccenter.visitadvisor.bean;
 
-import java.text.NumberFormat;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
@@ -22,58 +18,69 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import org.ipccenter.visitadvisor.model.Event;
-import org.ipccenter.visitadvisor.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author spitty
  */
-@ManagedBean(name="eventService")
+@ManagedBean
 @ApplicationScoped
 public class EventService {
-    
-    @Resource
-    UserTransaction utx;
-    
-    @PersistenceUnit 
-    EntityManagerFactory entityManagerFactory;
 
-    @PostConstruct
-    public void createUser(){
-        try {
-            System.out.println("createUser");
-            EntityManager em = entityManagerFactory.createEntityManager();
-            utx.begin();
-            em.joinTransaction();
-            User u = new User();
-            u.setId(1L);
-            u.setName("User#1");
-            em.persist(u);
-            em.flush();
-//            em.find(User.class, (long) 1);
-            utx.commit();
-        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
-            Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
+    private static final Logger LOG = LoggerFactory.getLogger(EventService.class);
+
+    @PersistenceUnit
+    private EntityManagerFactory emf;
+
+    @Resource
+    private UserTransaction utx;
+
     /**
-     * Generate sample list of events
+     * Generate sample list of events.
      * @param size specifies size of result {@link List}
      * @return {@link List} of {@link Event}
      */
     public List<Event> createEvents(int size) {
+        LOG.debug("createEvents({}) called", size);
         if (size < 1) {
             return Collections.EMPTY_LIST;
         }
-        
-        List<Event> events = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            Event event = new Event(String.format("Event %3d", i), LocalDateTime.now().plusDays(i));
-            event.setId(Long.valueOf(i));
-            events.add(event);
+        try {
+            EntityManager em = emf.createEntityManager();
+            // begin transaction
+            utx.begin();
+            // join to started transaction
+            em.joinTransaction();
+            List<Event> events = new ArrayList<>(size);
+            for (int i = 0; i < size; i++) {
+                Event event = em.find(Event.class, (long) i + 1);
+                if (event == null) {
+                    event = new Event();
+                    event.setName(String.format("Event %3d", i));
+                    event.setTime(new Timestamp(ZonedDateTime.now().plusDays(i).toInstant().toEpochMilli()));
+                    event.setId(Long.valueOf(i + 1));
+                    em.persist(event);
+                }
+                events.add(event);
+            }
+            em.flush();
+            utx.commit();
+            LOG.debug("Returned: {}", events);
+            return events;
+        } catch (SecurityException | RollbackException | HeuristicMixedException
+                | HeuristicRollbackException | SystemException
+                | IllegalStateException | NotSupportedException
+                ex) {
+            LOG.error("Error occurred on creating test Events", ex);
+            try {
+                utx.rollback();
+            } catch (SystemException | IllegalStateException | SecurityException exeption) {
+                LOG.error("Can't rollback", exeption);
+            }
+            return null;
         }
-        return events;
     }
 
 }
