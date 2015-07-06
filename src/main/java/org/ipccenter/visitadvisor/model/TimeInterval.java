@@ -5,10 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 
-/**
- *
- * @author stad
- */
 @Entity
 @NamedQuery(name = "TimeInterval.getAll", query = "SELECT e from TimeInterval e")
 public class TimeInterval {

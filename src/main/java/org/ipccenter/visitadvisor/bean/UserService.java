@@ -9,10 +9,6 @@ import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author stad
- */
 @ManagedBean
 @ApplicationScoped
 public class UserService {
