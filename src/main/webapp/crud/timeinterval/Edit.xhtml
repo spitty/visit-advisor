@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TimeIntervalEditDlg" widgetVar="TimeIntervalEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditTimeIntervalTitle}">
+            <h:form id="TimeIntervalEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{timeIntervalController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditTimeIntervalLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{timeIntervalController.selected.id}" title="#{bundle.EditTimeIntervalTitle_id}" />
+                        <p:outputLabel value="#{bundle.EditTimeIntervalLabel_startTime}" for="startTime" />
+                        <p:calendar id="startTime" value="#{timeIntervalController.selected.startTime}" pattern="MM/dd/yyyy HH:mm:ss" title="#{bundle.EditTimeIntervalTitle_startTime}"/>
+                        <p:outputLabel value="#{bundle.EditTimeIntervalLabel_endTime}" for="endTime" />
+                        <p:calendar id="endTime" value="#{timeIntervalController.selected.endTime}" pattern="MM/dd/yyyy HH:mm:ss" title="#{bundle.EditTimeIntervalTitle_endTime}"/>
+                        <p:outputLabel value="#{bundle.EditTimeIntervalLabel_duration}" for="duration" />
+                        <p:inputText id="duration" value="#{timeIntervalController.selected.duration}" title="#{bundle.EditTimeIntervalTitle_duration}" />
+                        <p:outputLabel value="#{bundle.EditTimeIntervalLabel_repeatInterval}" for="repeatInterval" />
+                        <p:inputText id="repeatInterval" value="#{timeIntervalController.selected.repeatInterval}" title="#{bundle.EditTimeIntervalTitle_repeatInterval}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{timeIntervalController.update}" value="#{bundle.Save}" update="display,:TimeIntervalListForm:datalist,:growl" oncomplete="handleSubmit(args, 'TimeIntervalEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="TimeIntervalEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,25 +1,29 @@
 package org.ipccenter.visitadvisor.model;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @NamedQuery(name = "TimeInterval.getAll", query = "SELECT e from TimeInterval e")
 public class TimeInterval {
     @Id
     private Long id;
-    Timestamp startTime;
-    Timestamp endTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    Date startTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    Date endTime;
     long duration;
     long repeatInterval;
 
-    public Timestamp getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Timestamp endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 
@@ -31,15 +35,15 @@ public class TimeInterval {
         this.repeatInterval = repeatInterval;
     }
 
-    public void setStartTime(Timestamp startAt) {
-        this.startTime = startAt;
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 
     public void setDuration(long duration) {
         this.duration = duration;
     }
 
-    public Timestamp getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 

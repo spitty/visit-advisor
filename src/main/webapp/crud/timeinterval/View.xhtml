@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TimeIntervalViewDlg" widgetVar="TimeIntervalViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewTimeIntervalTitle}">
+            <h:form id="TimeIntervalViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{timeIntervalController.selected != null}">
+                        <h:outputText value="#{bundle.ViewTimeIntervalLabel_id}"/>
+                        <h:outputText value="#{timeIntervalController.selected.id}" title="#{bundle.ViewTimeIntervalTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewTimeIntervalLabel_startTime}"/>
+                        <h:outputText value="#{timeIntervalController.selected.startTime}" title="#{bundle.ViewTimeIntervalTitle_startTime}"/>
+                        <h:outputText value="#{bundle.ViewTimeIntervalLabel_endTime}"/>
+                        <h:outputText value="#{timeIntervalController.selected.endTime}" title="#{bundle.ViewTimeIntervalTitle_endTime}"/>
+                        <h:outputText value="#{bundle.ViewTimeIntervalLabel_duration}"/>
+                        <h:outputText value="#{timeIntervalController.selected.duration}" title="#{bundle.ViewTimeIntervalTitle_duration}"/>
+                        <h:outputText value="#{bundle.ViewTimeIntervalLabel_repeatInterval}"/>
+                        <h:outputText value="#{timeIntervalController.selected.repeatInterval}" title="#{bundle.ViewTimeIntervalTitle_repeatInterval}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="TimeIntervalViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

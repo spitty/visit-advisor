@@ -45,7 +45,7 @@ public abstract class AbstractFacade<T> {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
         Root c = cq.from(entityClass);
-        cq.select(c).orderBy(cb.asc(c.get("time")));
+        cq.select(c).orderBy(cb.asc(c.get("id")));
         return getEntityManager().createQuery(cq).getResultList();
     }
 
