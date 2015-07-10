@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 
 /**
@@ -18,7 +20,10 @@ public class Event implements Serializable {
     @Id
     private Long id;
     private String name;
+    @OneToMany
     private Collection<TimeInterval> time;
+    @ManyToMany
+    Collection<User> users;
 
     public Long getId() {
         return id;
