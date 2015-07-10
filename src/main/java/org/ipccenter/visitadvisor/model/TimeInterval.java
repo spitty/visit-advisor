@@ -1,5 +1,6 @@
 package org.ipccenter.visitadvisor.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,7 +10,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @NamedQuery(name = "TimeInterval.getAll", query = "SELECT e from TimeInterval e")
-public class TimeInterval {
+public class TimeInterval implements Serializable {
     @Id
     private Long id;
     @Temporal(TemporalType.TIMESTAMP)

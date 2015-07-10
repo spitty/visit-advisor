@@ -1,5 +1,6 @@
 package org.ipccenter.visitadvisor.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +16,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @NamedQuery(name = "Event.getAll", query = "SELECT e from Event e")
-public class Event {
+public class Event implements Serializable {
 
     @Id
     private Long id;

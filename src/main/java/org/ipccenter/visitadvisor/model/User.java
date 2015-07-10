@@ -1,5 +1,6 @@
 package org.ipccenter.visitadvisor.model;
 
+import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,7 +10,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "user_table")
 @NamedQuery(name = "User.getAll", query = "SELECT e from User e")
-public class User {
+public class User implements Serializable {
     @Id
     private Long id;
     String name;
