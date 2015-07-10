@@ -1,7 +1,5 @@
 package org.ipccenter.visitadvisor.bean;
 
-import java.sql.Timestamp;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -59,7 +57,6 @@ public class EventService {
                 if (event == null) {
                     event = new Event();
                     event.setName(String.format("Event %3d", i));
-                    event.setTime(new Timestamp(ZonedDateTime.now().plusDays(i).toInstant().toEpochMilli()));
                     event.setId(Long.valueOf(i + 1));
                     em.persist(event);
                 }

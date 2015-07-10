@@ -1,13 +1,10 @@
 package org.ipccenter.visitadvisor.model;
 
 import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.Column;
+import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 
 /**
@@ -21,9 +18,7 @@ public class Event implements Serializable {
     @Id
     private Long id;
     private String name;
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "time_stamp")
-    private Date time;
+    private Collection<TimeInterval> time;
 
     public Long getId() {
         return id;
@@ -39,14 +34,6 @@ public class Event implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
     }
 
     @Override
