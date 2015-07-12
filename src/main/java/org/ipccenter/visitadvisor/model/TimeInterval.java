@@ -3,6 +3,8 @@ package org.ipccenter.visitadvisor.model;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
@@ -12,6 +14,7 @@ import javax.persistence.TemporalType;
 @NamedQuery(name = "TimeInterval.getAll", query = "SELECT e from TimeInterval e")
 public class TimeInterval implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Temporal(TemporalType.TIMESTAMP)
     Date startTime;

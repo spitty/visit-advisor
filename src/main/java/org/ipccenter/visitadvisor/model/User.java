@@ -3,6 +3,8 @@ package org.ipccenter.visitadvisor.model;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
@@ -14,6 +16,7 @@ import javax.persistence.Table;
 @NamedQuery(name = "User.getAll", query = "SELECT e from User e")
 public class User implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     String name;
     @OneToMany
