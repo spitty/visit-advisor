@@ -18,11 +18,11 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    String name;
+    private String name;
     @OneToMany
-    Collection<TimeInterval> availableTimeIntervals;
+    private Collection<TimeInterval> availableTimeIntervals;
     @ManyToMany
-    Collection<Event> desiredEvents;
+    private Collection<Event> desiredEvents;
 
     public void setName(String name) {
         this.name = name;
@@ -54,5 +54,13 @@ public class User implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    public void addDesiredEvent(Event e) {
+        desiredEvents.add(e);
+    }
+    
+    public void addAvailableTimeInterval(TimeInterval ti) {
+        availableTimeIntervals.add(ti);
     }
 }

@@ -26,7 +26,7 @@ public class Event implements Serializable {
     @OneToMany
     private Collection<TimeInterval> time;
     @ManyToMany
-    Collection<User> users;
+    private Collection<User> users;
 
     public Long getId() {
         return id;
@@ -49,4 +49,11 @@ public class Event implements Serializable {
         return "Event{" + "name=" + name + ", time=" + time + '}';
     }
 
+    public void addTime(TimeInterval ti) {
+        time.add(ti);
+    }
+    
+    public void addUser(User user) {
+        users.add(user);
+    }
 }

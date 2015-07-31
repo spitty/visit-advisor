@@ -17,11 +17,11 @@ public class TimeInterval implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Temporal(TemporalType.TIMESTAMP)
-    Date startTime;
+    private Date startTime;
     @Temporal(TemporalType.TIMESTAMP)
-    Date endTime;
-    long duration;
-    long repeatInterval;
+    private Date endTime;
+    private long duration;
+    private long repeatInterval;
 
     public Date getEndTime() {
         return endTime;
