@@ -25,6 +25,22 @@ public class Event implements Serializable {
     private String name;
     @OneToMany
     private Collection<TimeInterval> time;
+
+    public Collection<TimeInterval> getTime() {
+        return time;
+    }
+
+    public void setTime(Collection<TimeInterval> time) {
+        this.time = time;
+    }
+
+    public Collection<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Collection<User> users) {
+        this.users = users;
+    }
     @ManyToMany
     private Collection<User> users;
 

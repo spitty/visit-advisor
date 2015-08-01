@@ -4,9 +4,12 @@ import java.lang.reflect.ParameterizedType;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -34,6 +37,7 @@ public class TestEntityCreator {
     private final int eventsSize = 10;
     private final int timeIntervalsSize = 10;
     private final int usersSize = 10;
+    private final long seed = 228;
     
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(TestEntityCreator.class);
     
@@ -49,7 +53,7 @@ public class TestEntityCreator {
         List<Event> events = createEvents(eventsSize);
         List<TimeInterval> tis = createTimeIntervals(timeIntervalsSize);
         List<User> users = createUsers(usersSize);
-        Random r = new Random(LocalDateTime.now().getNano());
+        Random r = new Random(seed);
         
         for (int i = 0; i < users.size(); i++) {
             for (int j = 0; j < events.size(); j++)
@@ -71,32 +75,47 @@ public class TestEntityCreator {
         }
         
         try {
-            persistEntities(events);
-            persistEntities(tis);
-            persistEntities(users);
+            persistEntities(events, Event.class);
+        } catch (NotSupportedException ex) {
+            Logger.getLogger(TestEntityCreator.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SystemException ex) {
+            Logger.getLogger(TestEntityCreator.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RollbackException ex) {
+            Logger.getLogger(TestEntityCreator.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (HeuristicMixedException ex) {
+            Logger.getLogger(TestEntityCreator.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (HeuristicRollbackException ex) {
+            Logger.getLogger(TestEntityCreator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            persistEntities(tis, TimeInterval.class);
+            persistEntities(users, User.class);
         } catch (Exception ex) {
-            
+            LOG.error("Somthing's wrong");
         }
     }
     
-    private <T> void persistEntities(List<T> entities) throws NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
+    private <T> void persistEntities(List<T> entities, Class<T> c) throws NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
+        LOG.debug("0");
         EntityManager em = emf.createEntityManager();
-
-        final Class<T> c =                                  // FIXMEPLEASE
-                (Class<T>) ((ParameterizedType) getClass()
-                .getGenericSuperclass())
-                .getActualTypeArguments()[0];
-        
+        LOG.debug("1");
+        LOG.debug("2");
         // begin transaction
         utx.begin();
         // join to started transaction
+        LOG.debug("3");
         em.joinTransaction();
+        LOG.debug("4");
         for (int i = 0; i < entities.size(); i++) { // no lambda for compatibility
             T e = em.find(c, (long) i + 1);
+            LOG.debug("5 " + i);
             if (e == null)
-                em.persist(e);
+                em.persist(entities.get(i));
         }
-        em.flush();
+        LOG.debug("4");
+        //em.flush();
+        LOG.debug("5");
         utx.commit();
     }
     
@@ -104,6 +123,8 @@ public class TestEntityCreator {
         List<Event> events = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             Event event = new Event();
+            event.setTime(new ArrayList<>());
+            event.setUsers(new ArrayList<>());
             event.setName(String.format("Event %3d", i));
             event.setId(Long.valueOf(i + 1));
             events.add(event);
@@ -129,6 +150,8 @@ public class TestEntityCreator {
         List<User> users = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             User user = new User();
+            user.setAvailableTimeIntervals(new ArrayList<>());
+            user.setDesiredEvents(new ArrayList<>());
             user.setId(Long.valueOf(i + 1));
             user.setName("User #" + i);
             users.add(user);
