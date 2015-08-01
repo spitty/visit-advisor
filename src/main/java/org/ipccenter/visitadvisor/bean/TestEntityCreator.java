@@ -51,72 +51,65 @@ public class TestEntityCreator {
     public void createTestEntities() {
         LOG.debug("createTestEntities() called");
         List<Event> events = createEvents(eventsSize);
+        LOG.debug("Event objects created");
         List<TimeInterval> tis = createTimeIntervals(timeIntervalsSize);
+        LOG.debug("TimeInterval objects created");
         List<User> users = createUsers(usersSize);
+        LOG.debug("User objects created");
         Random r = new Random(seed);
         
-        for (int i = 0; i < users.size(); i++) {
-            for (int j = 0; j < events.size(); j++)
-                if (r.nextBoolean()) {
-                    users.get(i).addDesiredEvent(events.get(j));
-                    events.get(j).addUser(users.get(i));
-                }
-            for (int j = 0; j < tis.size(); j++)
-                if (r.nextBoolean()) {
-                    users.get(i).addAvailableTimeInterval(tis.get(j));
-                }
-        }
+        users.stream().map((user) -> {
+            events.stream().filter((event) -> (r.nextBoolean())).map((event) -> {
+                user.addDesiredEvent(event);
+                return event;
+            }).forEach((event) -> {
+                event.addUser(user);
+            });
+            return user;
+        }).forEach((user) -> {
+            tis.stream().filter((ti) -> (r.nextBoolean())).forEach((ti) -> {
+                user.addAvailableTimeInterval(ti);
+            });
+        });
         
-        for (int i = 0; i < events.size(); i++) {
-            for (int j = 0; j < tis.size(); j++)
-                if (r.nextBoolean()) {
-                    events.get(i).addTime(tis.get(j));
-                }
-        }
+        events.stream().forEach((event) -> {
+            tis.stream().filter((ti) -> (r.nextBoolean())).forEach((ti) -> {
+                event.addTime(ti);
+            });
+        });
+        LOG.debug("Relations set");
         
-        try {
-            persistEntities(events, Event.class);
-        } catch (NotSupportedException ex) {
-            Logger.getLogger(TestEntityCreator.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SystemException ex) {
-            Logger.getLogger(TestEntityCreator.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RollbackException ex) {
-            Logger.getLogger(TestEntityCreator.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (HeuristicMixedException ex) {
-            Logger.getLogger(TestEntityCreator.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (HeuristicRollbackException ex) {
-            Logger.getLogger(TestEntityCreator.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ArrayList all = new ArrayList();
+        tis.forEach(ti -> all.add(ti));
+        events.forEach(e -> all.add(e));
+        users.forEach(u -> all.add(u));
+        LOG.debug("Lists merged");
         
         try {
-            persistEntities(tis, TimeInterval.class);
-            persistEntities(users, User.class);
+            persistEntities(all);
         } catch (Exception ex) {
-            LOG.error("Somthing's wrong");
+            LOG.debug("Something went wrong during persisting entities");
         }
     }
     
-    private <T> void persistEntities(List<T> entities, Class<T> c) throws NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
-        LOG.debug("0");
+    private void persistEntities(List entities) throws NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
+        LOG.debug("persistEntities(...) called");
         EntityManager em = emf.createEntityManager();
-        LOG.debug("1");
-        LOG.debug("2");
+        LOG.debug("Entity manager created");
         // begin transaction
         utx.begin();
+        LOG.debug("Transaction started");
         // join to started transaction
-        LOG.debug("3");
         em.joinTransaction();
-        LOG.debug("4");
-        for (int i = 0; i < entities.size(); i++) { // no lambda for compatibility
-            T e = em.find(c, (long) i + 1);
-            LOG.debug("5 " + i);
-            if (e == null)
-                em.persist(entities.get(i));
+        LOG.debug("Joined transaction");
+        for (int i = 0; i < entities.size(); i++) {
+            em.persist(entities.get(i));
+            LOG.debug("Entity #" + i + " persisted");
         }
-        LOG.debug("4");
-        //em.flush();
-        LOG.debug("5");
+        em.flush();
+        LOG.debug("Entity manager flushed");
         utx.commit();
+        LOG.debug("Transaction committed");
     }
     
     private List<Event> createEvents(int size) {
