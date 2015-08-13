@@ -13,4 +13,12 @@ hs_err_pid*
 
 # IDE configs
 /nb-configuration.xml
+/nbactions.xml
 /target/
+
+# IDEA project files
+*.iml
+/.idea/
+
+# Logs, etc
+*.log
