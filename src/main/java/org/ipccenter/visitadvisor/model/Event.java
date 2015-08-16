@@ -1,6 +1,7 @@
 package org.ipccenter.visitadvisor.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,10 +12,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 
-/**
- *
- * @author spitty
- */
 @Entity
 @NamedQuery(name = "Event.getAll", query = "SELECT e from Event e")
 public class Event implements Serializable {
@@ -24,14 +21,16 @@ public class Event implements Serializable {
     private Long id;
     private String name;
     @OneToMany
-    private Collection<TimeInterval> time;
+    private Collection<TimeInterval> timeIntervals;
+    @ManyToMany
+    private Collection<User> users;
 
     public Collection<TimeInterval> getTime() {
-        return time;
+        return timeIntervals;
     }
 
     public void setTime(Collection<TimeInterval> time) {
-        this.time = time;
+        this.timeIntervals = time;
     }
 
     public Collection<User> getUsers() {
@@ -41,8 +40,6 @@ public class Event implements Serializable {
     public void setUsers(Collection<User> users) {
         this.users = users;
     }
-    @ManyToMany
-    private Collection<User> users;
 
     public Long getId() {
         return id;
@@ -62,14 +59,20 @@ public class Event implements Serializable {
 
     @Override
     public String toString() {
-        return "Event{" + "name=" + name + ", time=" + time + '}';
+        return "Event{" + "name=" + name + ", time=" + timeIntervals + '}';
     }
 
-    public void addTime(TimeInterval ti) {
-        time.add(ti);
+    public void addTimeInterval(TimeInterval ti) {
+        if (timeIntervals == null) {
+            timeIntervals = new ArrayList<>();
+        }
+        timeIntervals.add(ti);
     }
-    
+
     public void addUser(User user) {
+        if (users == null) {
+            users = new ArrayList<>();
+        }
         users.add(user);
     }
 }
