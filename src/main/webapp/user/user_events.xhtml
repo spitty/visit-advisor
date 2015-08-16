@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>
+        <title>My events</title>
+    </h:head>
+    <h:body>
+        <p:button outcome="/index" value="Home" icon="ui-icon-home"/>
+        <p:layout>
+            <p:layoutUnit position="north">
+                Hello,
+                <h:outputText value="Name: #{userInfoSessionBean.getUser().name}"  />
+            </p:layoutUnit>
+            <p:layoutUnit position="center">
+                <h3>Events:</h3>
+                <p:dataList value="#{userInfoSessionBean.user.desiredEvents}" var="event" type="definition">
+                    <p:fieldset legend="#{event.name}">
+                        <h:outputText value="Time of occurrence:"/>
+                        <p:dataList value="#{event.time}" var="time" type="definition" >
+                            <p:panelGrid columns="2" >
+                                <h:outputText value="Start time:" />
+                                <h:outputText value="#{time.startTime}" />
+                                <h:outputText value="End time:" />
+                                <h:outputText value="#{time.endTime}" />
+                                <h:outputText value="Duration (ms):" />
+                                <h:outputText value="#{time.duration}" />
+                                <h:outputText value="Repeat interval (ms):" />
+                                <h:outputText value="#{time.repeatInterval}" />
+                            </p:panelGrid>
+                        </p:dataList>
+                    </p:fieldset>
+                </p:dataList>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</html>

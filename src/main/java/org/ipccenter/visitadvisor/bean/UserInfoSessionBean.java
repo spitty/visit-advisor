@@ -1,23 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ipccenter.visitadvisor.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import javax.ejb.Stateless;
+import java.util.Collections;
+import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
-import org.eclipse.persistence.internal.core.helper.CoreClassConstants;
-import org.ipccenter.visitadvisor.model.Event;
+import javax.inject.Inject;
 import org.ipccenter.visitadvisor.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -25,27 +16,31 @@ import org.ipccenter.visitadvisor.model.User;
  */
 @ManagedBean
 @SessionScoped
-public class UserInfoSessionBean implements Serializable{
+public class UserInfoSessionBean implements Serializable {
 
-    private User user;
-    
-    public UserInfoSessionBean() {
-        User user = new User();
-        Collection<Event> events = new ArrayList<Event>();
-        for (int i = 0; i < 10; i++){
-            Event event = new Event();
-            event.setName("event " + i);
-            event.setTime(new Date());
-            events.add(event);
+    private static final Logger LOG = LoggerFactory.getLogger(UserInfoSessionBean.class);
+
+    @Inject
+    private UserFacade userFacade;
+
+    public User getUser() {
+        if (userFacade == null) {
+            LOG.warn("Instance of UserFacade had not beeb injected");
+            return null;
         }
-        user.setDesiredEvents(events);
-        user.setName("User!");
-        this.user = user;
+
+        // TODO we should replace it with real user getting by userId
+        List<User> allUsers = userFacade.findAll();
+        if (allUsers.isEmpty()) {
+            LOG.warn("No users found");
+            return null;
+        }
+        Collections.sort(allUsers, (User o1, User o2) -> Long.compare(o1.getId(), o2.getId()));
+
+        return allUsers.get(0);
     }
-    
-    public User getUser(){
-        return user;
+
+    public void setUserFacade(UserFacade userFacade) {
+        this.userFacade = userFacade;
     }
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
 }

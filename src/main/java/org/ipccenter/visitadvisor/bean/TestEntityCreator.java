@@ -74,7 +74,7 @@ public class TestEntityCreator {
         
         events.stream().forEach((event) -> {
             tis.stream().filter((ti) -> (r.nextBoolean())).forEach((ti) -> {
-                event.addTime(ti);
+                event.addTimeInterval(ti);
             });
         });
         LOG.debug("Relations set");
