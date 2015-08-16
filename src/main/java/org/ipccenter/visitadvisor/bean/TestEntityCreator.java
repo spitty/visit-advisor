@@ -1,20 +1,12 @@
 package org.ipccenter.visitadvisor.bean;
 
-import java.lang.reflect.ParameterizedType;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.ejb.Startup;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.persistence.EntityManager;
@@ -88,8 +80,9 @@ public class TestEntityCreator {
         try {
             persistEntities(all);
         } catch (Exception ex) {
-            LOG.debug("Something went wrong during persisting entities");
+            LOG.error("Something went wrong during persisting entities");
         }
+        (TimeIntervalUtils.sortByNextOccurrence(tis)).forEach((TimeInterval t) -> LOG.debug(t.getId().toString()));
     }
     
     private void persistEntities(List entities) throws NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
@@ -131,9 +124,9 @@ public class TestEntityCreator {
             TimeInterval ti = new TimeInterval();
             ti.setId(Long.valueOf(i + 1));
             ti.setStartTime(Timestamp.valueOf(LocalDateTime.of(2001, 9, 11, 8, 46)));
-            ti.setEndTime(Timestamp.valueOf(LocalDateTime.now()));
+            ti.setEndTime(Timestamp.valueOf(LocalDateTime.now().plusDays(i * 2)));
             ti.setDuration(i * 1337);
-            ti.setRepeatInterval(i * 228228);
+            ti.setRepeatInterval(i * 228228 + 100000);
             timeIntervals.add(ti);
         }
         return timeIntervals;
