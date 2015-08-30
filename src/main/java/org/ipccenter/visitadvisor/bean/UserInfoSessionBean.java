@@ -1,10 +1,10 @@
 package org.ipccenter.visitadvisor.bean;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.ipccenter.visitadvisor.model.User;
 import org.slf4j.Logger;
@@ -25,19 +25,14 @@ public class UserInfoSessionBean implements Serializable {
 
     public User getUser() {
         if (userFacade == null) {
-            LOG.warn("Instance of UserFacade had not beeb injected");
+            LOG.warn("Instance of UserFacade had not been injected");
             return null;
         }
 
-        // TODO we should replace it with real user getting by userId
-        List<User> allUsers = userFacade.findAll();
-        if (allUsers.isEmpty()) {
-            LOG.warn("No users found");
-            return null;
-        }
-        Collections.sort(allUsers, (User o1, User o2) -> Long.compare(o1.getId(), o2.getId()));
-
-        return allUsers.get(0);
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        String name = ec.getRemoteUser();
+        User user = userFacade.findByName(name);
+        return user;
     }
 
     public void setUserFacade(UserFacade userFacade) {

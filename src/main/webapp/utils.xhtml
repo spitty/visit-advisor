@@ -8,6 +8,7 @@
     </h:head>
     <h:body>
         <p:button outcome="/index" value="Home" icon="ui-icon-home"/>
+        <p:commandButton action="#{userSessionBean.logout()}" value="#{userSessionBean.logoutLabel}" icon="ui-icon-extlink"/>
         <br />
         <p:button outcome="/crud/event/List" value="Show All Event Items"/>
         <br />
