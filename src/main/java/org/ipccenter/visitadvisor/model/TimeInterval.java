@@ -14,7 +14,7 @@ import javax.persistence.TemporalType;
 @NamedQuery(name = "TimeInterval.getAll", query = "SELECT e from TimeInterval e")
 public class TimeInterval implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     @Temporal(TemporalType.TIMESTAMP)
     private Date startTime;
@@ -62,4 +62,10 @@ public class TimeInterval implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "TimeInterval{" + "id=" + id + ", startTime=" + startTime + ", endTime=" + endTime + ", duration=" + duration + ", repeatInterval=" + repeatInterval + '}';
+    }
+    
 }

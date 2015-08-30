@@ -3,6 +3,7 @@ package org.ipccenter.visitadvisor.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,12 +18,12 @@ import javax.persistence.OneToMany;
 public class Event implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     private String name;
     @OneToMany
     private Collection<TimeInterval> timeIntervals;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private Collection<User> users;
 
     public Collection<TimeInterval> getTime() {
